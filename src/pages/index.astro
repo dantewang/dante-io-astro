@@ -3,33 +3,127 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="-D/A/N/T/E-">
-	<main class="bg-repeat bg-main-page grid grid-cols-1 content-center w-screen h-screen xl:pl-72">
-		<div class="bg-gradient-to-r from-[#7CEAFF] via-[#96E631] to-[#3CE274] p-8 xl:pl-14 xl:pt-14">
-			<img src="/dante.png"/>
-			<nav class="list-none flex flex-row gap-6 mt-8">
-				<li>
-					<a href="https://blog.dante.io">/Blog</a>
-				</li>
-				<li>
-					<a href="#">/About</a>
-				</li>
-				<li>
-					<a href="#">/Links</a>
-				</li>
-			</nav>
-		</div>
-		<div class="bg-gradient-to-r from-[#7CEAFF] via-[#96E631] to-[#3CE274] p-6 xl:pl-14 mt-2">
-			<ul class="flex justify-start">
-				<li>
-					<a href="https://github.com/dantewang" target="_blank">
-						<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 98 96">
-							<g>
-								<path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" fill="#24292f"/>
-							</g>
+	<div class="theme-toggle">
+		<button id="theme-toggle" aria-label="Toggle theme">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+		</button>
+	</div>
+	<main class="min-h-screen flex flex-col justify-center px-4 py-8 md:px-8 lg:px-16">
+		<div class="container mx-auto max-w-4xl animate-fade-in">
+			<div class="hero-section backdrop-blur-sm bg-opacity-80 rounded-2xl overflow-hidden">
+				<div class="p-8 md:p-12">
+					<img src="/dante.png" alt="Dante Logo" class="max-w-[200px] md:max-w-[300px] hover:transform hover:scale-105 transition-transform duration-300"/>
+					
+					<nav class="mt-8 flex flex-wrap gap-6 text-lg font-medium">
+						<a href="https://blog.dante.io" class="nav-link group">
+							<span class="relative">
+								/Blog
+								<span class="absolute bottom-0 left-0 w-full h-0.5 bg-current transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+							</span>
+						</a>
+						<a href="#" class="nav-link group">
+							<span class="relative">
+								/About
+								<span class="absolute bottom-0 left-0 w-full h-0.5 bg-current transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+							</span>
+						</a>
+						<a href="#" class="nav-link group">
+							<span class="relative">
+								/Links
+								<span class="absolute bottom-0 left-0 w-full h-0.5 bg-current transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+							</span>
+						</a>
+					</nav>
+				</div>
+			</div>
+
+			<div class="social-links mt-6 p-6 backdrop-blur-sm bg-opacity-80 rounded-2xl">
+				<div class="flex gap-6">
+					<a href="https://github.com/dantewang" target="_blank" class="social-icon hover:transform hover:scale-110 transition-transform duration-300">
+						<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 98 96">
+							<path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/>
 						</svg>
 					</a>
-				</li>
-			</ul>
+				</div>
+			</div>
 		</div>
 	</main>
 </Layout>
+
+<style>
+	.theme-toggle {
+		position: fixed;
+		top: 1rem;
+		right: 1rem;
+		z-index: 100;
+	}
+
+	.theme-toggle button {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+		color: var(--text-primary);
+		background: var(--bg-secondary);
+		transition: all 0.3s ease;
+	}
+
+	.theme-toggle button:hover {
+		transform: rotate(15deg);
+	}
+
+	.sun {
+		display: none;
+	}
+
+	[data-theme="dark"] .sun {
+		display: block;
+	}
+
+	[data-theme="dark"] .moon {
+		display: none;
+	}
+
+	.hero-section {
+		background: linear-gradient(135deg, rgba(124, 234, 255, 0.1), rgba(150, 230, 49, 0.1), rgba(60, 226, 116, 0.1));
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.social-links {
+		background: linear-gradient(135deg, rgba(124, 234, 255, 0.05), rgba(150, 230, 49, 0.05), rgba(60, 226, 116, 0.05));
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.nav-link {
+		position: relative;
+		transition: all 0.3s ease;
+	}
+
+	.nav-link:hover {
+		transform: translateY(-2px);
+	}
+</style>
+
+<script>
+	const themeToggle = document.getElementById('theme-toggle');
+	const html = document.documentElement;
+
+	// Check for saved theme preference
+	const savedTheme = localStorage.getItem('theme');
+	if (savedTheme) {
+		html.setAttribute('data-theme', savedTheme);
+	} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		html.setAttribute('data-theme', 'dark');
+	}
+
+	// Theme toggle functionality
+	themeToggle?.addEventListener('click', () => {
+		const currentTheme = html.getAttribute('data-theme');
+		const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+		
+		html.setAttribute('data-theme', newTheme);
+		localStorage.setItem('theme', newTheme);
+	});
+</script>
