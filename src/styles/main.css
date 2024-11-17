@@ -1,8 +1,8 @@
 :root {
-  --bg-primary: #f0f4f8;
-  --text-primary: #1a202c;
-  --card-bg: rgba(255, 255, 255, 0.7);
-  --card-border: rgba(255, 255, 255, 0.3);
+  --bg-primary: #1a1f2e;
+  --text-primary: #f7fafc;
+  --card-bg: rgba(26, 32, 44, 0.7);
+  --card-border: rgba(255, 255, 255, 0.1);
   --dot-color: rgba(229, 231, 235, 0.15);
   --gradient-primary: linear-gradient(135deg, 
     rgba(124, 234, 255, 0.15), 
@@ -14,13 +14,6 @@
     rgba(150, 230, 49, 0.1), 
     rgba(60, 226, 116, 0.1)
   );
-}
-
-[data-theme="dark"] {
-  --bg-primary: #1a1f2e;
-  --text-primary: #f7fafc;
-  --card-bg: rgba(26, 32, 44, 0.7);
-  --card-border: rgba(255, 255, 255, 0.1);
 }
 
 * {
@@ -37,7 +30,6 @@ body {
   background-attachment: fixed;
   color: var(--text-primary);
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .background-pattern {
@@ -52,42 +44,6 @@ body {
     radial-gradient(circle at 75px 75px, var(--dot-color) 2%, transparent 0%);
   background-size: 100px 100px;
   opacity: 0.4;
-}
-
-.theme-toggle {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 100;
-}
-
-.theme-toggle button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  color: var(--text-primary);
-  background: var(--card-bg);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--card-border);
-  transition: transform 0.3s ease;
-}
-
-.theme-toggle button:hover {
-  transform: rotate(15deg);
-}
-
-.sun {
-  display: none;
-}
-
-[data-theme="dark"] .sun {
-  display: block;
-}
-
-[data-theme="dark"] .moon {
-  display: none;
 }
 
 main {
@@ -134,6 +90,7 @@ main {
 .logo-wrapper img {
   max-width: 200px;
   transition: transform 0.3s ease;
+  filter: invert(1) brightness(100);
 }
 
 @media (min-width: 768px) {
@@ -144,10 +101,6 @@ main {
 
 .logo-wrapper img:hover {
   transform: scale(1.05);
-}
-
-[data-theme="dark"] .logo-wrapper img {
-  filter: invert(1) brightness(100);
 }
 
 nav {
