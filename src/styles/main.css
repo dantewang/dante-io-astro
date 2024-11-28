@@ -1,9 +1,10 @@
 :root {
   --bg-primary: #1a1f2e;
   --text-primary: #f7fafc;
-  --card-bg: rgba(26, 32, 44, 0.7);
-  --card-border: rgba(255, 255, 255, 0.1);
-  --dot-color: rgba(229, 231, 235, 0.15);
+  --card-bg: rgba(26, 32, 44, 0.3);
+  --card-border: rgba(255, 255, 255, 0.05);
+  --accent-color: #64ffda;
+  --text-secondary: #8892b0;
 }
 
 * {
@@ -20,6 +21,22 @@ body {
   background-attachment: fixed;
   color: var(--text-primary);
   min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(10, 12, 16, 0.9),
+    rgba(10, 12, 16, 0.8)
+  );
+  z-index: 1;
 }
 
 main {
@@ -33,8 +50,9 @@ main {
 }
 
 .container {
-  max-width: 64rem;
+  max-width: 72rem;
   margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .hero-section {
@@ -43,19 +61,29 @@ main {
   border-radius: 1rem;
   overflow: hidden;
   backdrop-filter: blur(16px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
-              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 0 60px rgba(0, 0, 0, 0.3);
+  position: relative;
   animation: fadeIn 0.6s ease forwards;
 }
 
-.hero-content {
-  padding: 2rem;
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.03)
+  );
+  z-index: 0;
 }
 
-@media (min-width: 768px) {
-  .hero-content {
-    padding: 3rem;
-  }
+.hero-content {
+  padding: 4rem;
+  position: relative;
+  z-index: 1;
 }
 
 .logo-wrapper {
@@ -63,38 +91,41 @@ main {
 }
 
 .logo-wrapper img {
-  max-width: 200px;
-  transition: transform 0.3s ease;
+  max-width: 280px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   filter: invert(1) brightness(100);
 }
 
 @media (min-width: 768px) {
   .logo-wrapper img {
-    max-width: 300px;
+    max-width: 320px;
   }
 }
 
 .logo-wrapper img:hover {
   transform: scale(1.05);
+  filter: invert(1) brightness(100) drop-shadow(0 0 8px var(--accent-color));
 }
 
 nav {
   margin-top: 2rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  font-size: 1.125rem;
+  gap: 3rem;
+  font-size: 1.4rem;
   font-weight: 500;
 }
 
 .nav-link {
   position: relative;
-  color: var(--text-primary);
+  color: var(--text-secondary);
   text-decoration: none;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  padding-top: 0.2rem;
 }
 
 .nav-link:hover {
+  color: var(--accent-color);
   transform: translateY(-2px);
 }
 
@@ -102,47 +133,72 @@ nav {
   position: relative;
 }
 
-.nav-link span::after {
+.nav-link span::before {
   content: '';
   position: absolute;
-  bottom: -2px;
+  bottom: -4px;
   left: 0;
   width: 100%;
-  height: 2px;
-  background-color: currentColor;
+  height: 1px;
+  background: var(--accent-color);
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.nav-link:hover span::after {
+.nav-link:hover span::before {
   transform: scaleX(1);
+  transform-origin: left;
 }
 
 .social-links {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
+  margin-top: 3rem;
+  padding: 2rem;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 1rem;
   backdrop-filter: blur(16px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
-              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 0 60px rgba(0, 0, 0, 0.3);
+  position: relative;
   animation: fadeIn 0.6s ease forwards;
+}
+
+.social-links::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.03)
+  );
+  border-radius: 1rem;
+  z-index: 0;
 }
 
 .social-icons {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 3rem;
+  position: relative;
+  z-index: 1;
 }
 
 .social-icon {
-  color: var(--text-primary);
-  transition: transform 0.3s ease;
+  color: var(--text-secondary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .social-icon:hover {
-  transform: scale(1.1);
+  color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.social-icon svg {
+  width: 38px;
+  height: 38px;
 }
 
 @keyframes fadeIn {
@@ -153,5 +209,14 @@ nav {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateZ(0);
+  }
+  50% {
+    transform: translateY(-10px) translateZ(20px);
   }
 }
