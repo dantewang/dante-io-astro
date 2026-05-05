@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dante Ultimate UI</title>
+
+<style>
+:root {
+  --accent:#27c2d9;
+  --pink:#ff2fd1;
+}
+
+body {
+  margin:0;
+  overflow:hidden;
+  background:#f3f4f6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+#bg {
+  position:fixed;
+  inset:0;
+  z-index:0;
+}
+
+.hero {
+  position:relative;
+  width:100vw;
+  height:100vh;
+
+  --blue-top: 200px;
+  --blue-height: 120px;
+  --blue-bottom: calc(var(--blue-top) + var(--blue-height));
+}
+
+/* ===== 三线 ===== */
+.lines {
+  position:absolute;
+  left:60px;
+  top:0;
+  height:100%;
+  width:4px;
+}
+
+.line {
+  position:absolute;
+  width:4px;
+}
+
+.line.pink {
+  top:0;
+  height:var(--blue-top);
+  background:var(--pink);
+}
+
+.line.blue {
+  top:var(--blue-top);
+  height:var(--blue-height);
+  background:var(--accent);
+}
+
+.line.gray {
+  top:var(--blue-bottom);
+  height:calc(100% - var(--blue-bottom));
+  background:#999;
+}
+
+/* 文本 */
+.content {
+  position:absolute;
+  left:140px;
+  top:35%;
+  transform:translateY(-50%);
+}
+
+h1 {
+  font-size:110px;
+  font-weight:800;
+  margin:0;
+}
+
+.name {
+  font-size:110px;
+  font-weight:800;
+}
+
+.name .dante {
+  color:var(--accent);
+}
+
+/* 人物 */
+.character {
+  position:absolute;
+  right:5%;
+  bottom:0;
+  height:90%;
+}
+
+/* ===== 菜单（恢复） ===== */
+.menu {
+  position:absolute;
+  left:140px;
+  bottom:8%;
+  z-index:3;
+
+  font-size:13px;
+  letter-spacing:1.5px;
+  color:#333;
+}
+
+/* 左侧小竖线装饰 */
+.menu::before {
+  content:"";
+  position:absolute;
+  left:-20px;
+  top:0;
+  width:2px;
+  height:100%;
+  background:#aaa;
+}
+
+.menu-title {
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+/* 菜单项 */
+.menu-item {
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  color: #333;
+  margin: 6px 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+/* hover 只作用在 item */
+.menu-item:hover {
+  color: var(--accent);
+  transform: translateX(6px);
+}
+
+/* hover 指示条 */
+.menu-item::before {
+  content:"";
+  position:absolute;
+  left:-12px;
+  top:50%;
+  width:6px;
+  height:1px;
+  background:var(--accent);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:0.25s;
+}
+
+.menu-item:hover::before {
+  transform:scaleX(1);
+}
+
+.menu-item a {
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
+  width: 100%;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="hero">
+
+  <div class="lines">
+    <div class="line pink"></div>
+    <div class="line blue"></div>
+    <div class="line gray"></div>
+  </div>
+
+  <div class="content">
+    <h1>HELLO</h1>
+    <div class="name" id="name">
+      I'M <span class="dante">DANTE</span>
+    </div>
+  </div>
+
+  <div class="menu">
+    <div class="menu-title">// CONNECT</div>
+
+    <div class="menu-item"><a href="https://memos.dante.io" target="_blank">MEMOS</a></div>
+    <div class="menu-item"><a href="https://github.com/dantewang" target="_blank">GITHUB</a></div>
+  </div>
+
+  <!-- <img src="character.png" class="character"/> -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160/build/three.min.js"></script>
+
+<script>
+// ===== WebGL =====
+const renderer = new THREE.WebGLRenderer({
+  canvas:document.getElementById("bg"),
+  antialias:true
+});
+renderer.setSize(innerWidth, innerHeight);
+
+const scene = new THREE.Scene();
+const camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+
+const material = new THREE.ShaderMaterial({
+  uniforms:{
+    time:{value:0},
+    resolution:{value:new THREE.Vector2(innerWidth,innerHeight)}
+  },
+  fragmentShader:`
+
+  uniform float time;
+  uniform vec2 resolution;
+
+  // ===== hash =====
+  float hash(vec2 p){
+    return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453);
+  }
+
+  // ===== noise =====
+  float noise(vec2 p){
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+
+    float a = hash(i);
+    float b = hash(i + vec2(1.0,0.0));
+    float c = hash(i + vec2(0.0,1.0));
+    float d = hash(i + vec2(1.0,1.0));
+
+    vec2 u = f*f*(3.0-2.0*f);
+
+    return mix(a,b,u.x) +
+           (c-a)*u.y*(1.0-u.x) +
+           (d-b)*u.x*u.y;
+  }
+
+  // ===== fbm =====
+  float fbm(vec2 p){
+    float v = 0.0;
+    float a = 0.5;
+    for(int i=0;i<5;i++){
+      v += a * noise(p);
+      p *= 2.0;
+      a *= 0.5;
+    }
+    return v;
+  }
+
+  void main(){
+
+    vec2 uv = gl_FragCoord.xy / resolution;
+
+    // ===== 世界平移 =====
+    vec2 velocity = vec2(-0.06, 0.06);
+    vec2 p = uv + velocity * time * 0.2;
+
+    // 大结构 + 细节
+    float n = fbm(p * 2.0);
+    n += 0.3 * fbm(p * 10.0);
+
+    // 等高线
+    float contour = abs(fract(n * 20.0) - 0.5);
+    float lines = smoothstep(0.48, 0.5, contour);
+
+    // ===== 雾（远处更淡）=====
+    float fog = smoothstep(0.1, 1.0, uv.y);
+
+    vec3 col = vec3(0.96);
+    col -= lines * (1.0 - fog) * 0.18;
+
+    // 轻微方向渐变（增强空间感）
+    col *= 1.0 - 0.05 * (uv.x + uv.y);
+
+    gl_FragColor = vec4(col,1.0);
+  }
+  `
+});
+
+scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2), material));
+
+function animate(t){
+  material.uniforms.time.value = t * 0.001;
+  renderer.render(scene,camera);
+  requestAnimationFrame(animate);
+}
+animate();
+
+addEventListener("resize",()=>{
+  renderer.setSize(innerWidth,innerHeight);
+  material.uniforms.resolution.value.set(innerWidth,innerHeight);
+});
+
+// ===== 三线同步 =====
+function syncLines(){
+  const name = document.getElementById("name");
+  const hero = document.querySelector(".hero");
+
+  const r1 = name.getBoundingClientRect();
+  const r2 = hero.getBoundingClientRect();
+
+  const top = r1.top - r2.top;
+  const height = r1.height;
+
+  hero.style.setProperty('--blue-top', top + "px");
+  hero.style.setProperty('--blue-height', height + "px");
+}
+
+window.addEventListener("load", syncLines);
+window.addEventListener("resize", syncLines);
+document.fonts?.ready.then(syncLines);
+
+</script>
+
+</body>
+</html>
