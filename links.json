@@ -1,0 +1,14 @@
+{
+  "links": [
+    {
+      "label": "Memos",
+      "url": "https://memos.dante.io",
+      "note": "notes, thoughts & fragments"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/dantewang",
+      "note": "code & experiments"
+    }
+  ]
+}
