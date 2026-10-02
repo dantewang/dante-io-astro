@@ -1,0 +1,57 @@
+---
+// One post. The slug is the Markdown file name in src/content/blog
+// (avoid "page" and "tags", which are taken by list routes).
+import { render } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import { excerpt, getPosts, isoDate, postUrl, readingMinutes, tagUrl, type Post } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, newer: posts[i - 1], older: posts[i + 1] },
+  }));
+}
+
+interface Props { post: Post; newer?: Post; older?: Post }
+const { post, newer, older } = Astro.props;
+const { Content, headings } = await render(post);
+const toc = headings.filter(h => h.depth === 2);
+const { title, date, updated, tags, lang } = post.data;
+const shownUpdate = updated && isoDate(updated) !== isoDate(date) ? isoDate(updated) : null;
+---
+<BlogLayout title={`${title} · DANTE`} description={excerpt(post, 150)} progress>
+  <main class="article-wrap">
+    <article lang={lang}>
+      <header class="post-head">
+        <p class="crumb"><a href="/blog/">~/blog</a>/{isoDate(date).slice(0, 4)}/{post.id}</p>
+        <h1>{title}</h1>
+        {post.data.description && <p class="dek">{post.data.description}</p>}
+        <p class="post-info" lang="zh-CN">
+          <time datetime={date.toISOString()}>{isoDate(date)}</time>
+          {shownUpdate && <span>更新于 {shownUpdate}</span>}
+          <span>约 {readingMinutes(post.body)} 分钟</span>
+          {tags.map(t => <a class="tag" href={tagUrl(t)}>#{t}</a>)}
+        </p>
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      {(newer || older) && (
+        <nav class="post-end" aria-label="更多文章" lang="zh-CN">
+          {newer ? <a class="prev" href={postUrl(newer)}><small>← 较新</small><span lang={newer.data.lang}>{newer.data.title}</span></a> : <span />}
+          {older && <a class="next" href={postUrl(older)}><small>较早 →</small><span lang={older.data.lang}>{older.data.title}</span></a>}
+        </nav>
+      )}
+    </article>
+
+    {toc.length > 1 && (
+      <aside class="toc" aria-label="目录" lang="zh-CN">
+        <p>目录</p>
+        <ol>{toc.map(h => <li><a href={`#${h.slug}`} lang={lang}>{h.text}</a></li>)}</ol>
+      </aside>
+    )}
+  </main>
+</BlogLayout>

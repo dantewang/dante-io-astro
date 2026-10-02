@@ -1,0 +1,16 @@
+---
+import PostList from '../../../../components/PostList.astro';
+import { getPosts, paginate, tagCounts, tagUrl } from '../../../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = tagCounts(posts);
+  return tags.map(({ tag }) => {
+    const tagged = posts.filter(p => p.data.tags.includes(tag));
+    const chunks = paginate(tagged);
+    return { params: { tag }, props: { tag, chunk: chunks[0], pages: chunks.length, total: tagged.length, tags } };
+  });
+}
+const { tag, chunk, pages, total, tags } = Astro.props;
+---
+<PostList posts={chunk} page={1} pages={pages} base={tagUrl(tag)} total={total} tags={tags} tag={tag} />

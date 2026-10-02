@@ -1,0 +1,104 @@
+---
+// The cover: HELLO I'M DANTE and the live heap. Links and tagline come from
+// astro.config.mjs (siteConfig).
+import site from 'virtual:site-config';
+import { inline } from '../lib/inline';
+import ThemeInit from '../components/ThemeInit.astro';
+import ThemeSwitch from '../components/ThemeSwitch.astro';
+import BrandMark from '../components/BrandMark.astro';
+import '../styles/tokens.css';
+import '../styles/cover.css';
+
+const hostOf = (url: string) => { try { return new URL(url).host || url; } catch { return url; } };
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DANTE</title>
+<meta name="description" content="Dante — backend engineer, fifteen years on the JVM." />
+<meta name="theme-color" content="#070a10" />
+<meta property="og:title" content="HELLO I'M DANTE" />
+<meta property="og:description" content="Backend engineer, fifteen years on the JVM." />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" />
+<link rel="alternate" type="application/rss+xml" title="dante.io" href="/rss.xml" />
+<script is:inline>document.documentElement.classList.add('js');</script>
+<ThemeInit />
+</head>
+
+<body>
+
+<canvas id="heap" aria-hidden="true"></canvas>
+<div class="veil" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<main class="hero">
+  <div class="bar enter">
+    <a class="brand" href="/" aria-label="dante.io home">
+      <BrandMark />
+      dante.io
+    </a>
+    <div class="bar-right">
+      <span class="meta" aria-hidden="true">
+        <span class="status"><i class="dot"></i><span id="state">Running</span></span>
+        <span class="uptime">up <span id="uptime">00:00:00</span></span>
+      </span>
+      <ThemeSwitch />
+    </div>
+  </div>
+
+  <div class="intro">
+    <p class="eyebrow enter" style="--d:150ms">Backend engineer &middot; Java / JVM &middot; 15 yrs</p>
+    <h1 class="title" aria-label="Hello, I'm Dante">
+      <span class="row" aria-hidden="true"><span data-split>HELLO</span></span>
+      <span class="row" aria-hidden="true"><span class="im" data-split>I'M</span> <span data-split>DANTE</span><span class="caret"></span></span>
+    </h1>
+    <p class="tagline enter" style="--d:900ms" set:html={inline(site.tagline)} />
+  </div>
+
+  <div class="foot">
+    <nav aria-label="Elsewhere">
+      <ol class="links" id="links">
+        {site.links.map((l, i) => {
+          const external = /^https?:/i.test(l.url);
+          return (
+            <li class="enter" style={`--d:${1100 + i * 110}ms`}>
+              <a class="link" href={l.url} rel={external ? 'me noopener' : undefined}
+                 target={external && l.newTab !== false ? '_blank' : undefined}>
+                <span class="idx">{String(i + 1).padStart(2, '0')}</span>
+                <span class="label">{l.label}</span>
+                <span class="note">{l.note ?? hostOf(l.url)}</span>
+                <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12L12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+
+    <aside class="gc enter" style="--d:1300ms">
+      <div class="gc-stat" id="gcStat" aria-hidden="true">heap &mdash;</div>
+      <ol id="gcLog" aria-hidden="true"></ol>
+      <p class="gc-hint">
+        <span aria-hidden="true">
+          <span class="fine">your cursor is a <b>GC root</b> &middot; or try</span>
+          <span class="coarse">your finger is a <b>GC root</b> &middot; or try</span>
+        </span>
+        <button class="gc-btn" id="fullGC" type="button" aria-label="Run a full GC (compacts the heap into Hatsune Miku)">System.gc()</button>
+      </p>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <span>&copy; <span id="year">2026</span> Dante</span>
+  <span>hand-written &middot; the heap in the background is a toy garbage collector, running live &middot; psst: type 39</span>
+</footer>
+
+<script src="../scripts/cover.js"></script>
+</body>
+</html>

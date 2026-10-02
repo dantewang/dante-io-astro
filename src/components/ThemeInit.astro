@@ -1,0 +1,12 @@
+---
+// Sets data-theme before first paint (no flash): the visitor's saved choice,
+// else the system's. Must stay inline in <head>.
+---
+<script is:inline>
+  (() => {
+    let t = null;
+    try { t = localStorage.getItem('theme'); } catch {}
+    if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.dataset.theme = t;
+  })();
+</script>

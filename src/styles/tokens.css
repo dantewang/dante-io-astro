@@ -1,0 +1,105 @@
+/* =====================================================================
+   Design tokens shared by the cover page and the blog.
+   Dark is the default; [data-theme="light"] is the day theme. The theme
+   attribute is set before first paint by an inline script in each page.
+   ===================================================================== */
+
+:root {
+  --bg: #070a10;
+  --fg: #e6eef2;
+  --text: #c9d2db;          /* long-form body: a step softer than --fg */
+  --muted: #8a95a3;
+  --faint: #4c5665;
+  --line: rgba(230, 238, 242, .12);
+  --surface: rgba(230, 238, 242, .04);
+  --accent: #39c5bb;        /* teal (#39C5BB, Miku's colour): marks, sweeps, anything "live" */
+  --old: #ff6fae;           /* sakura pink: tenured / old-generation objects */
+  --accent-ink: #39c5bb;    /* the same two, when used for small text */
+  --old-ink: #ff6fae;
+  --glow-a: rgba(57, 197, 187, .09);
+  --glow-b: rgba(255, 111, 174, .06);
+  --vignette: rgba(3, 5, 9, .7);
+  --grain: .055;
+
+  /* canvas palette, as "r,g,b" — read by the heap view and the blog's ambient dots */
+  --c-fg: 230, 238, 242;
+  --c-accent: 57, 197, 187;
+  --c-old: 255, 111, 174;
+  /* Miku constellation: hair, skin, dark, light grey, pink */
+  --m-h: 57, 197, 187;
+  --m-s: 255, 226, 210;
+  --m-k: 120, 128, 150;
+  --m-g: 196, 204, 216;
+  --m-p: 255, 111, 174;
+  color-scheme: dark;
+
+  /* Chinese first-class: system CJK faces (no multi-MB webfont), each OS's
+     Latin UI face placed first so mixed text pairs naturally */
+  --cjk: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei",
+         "Noto Sans CJK SC", "Source Han Sans SC", "Noto Sans SC", sans-serif;
+  --read: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, var(--cjk);
+  --sans: "Archivo", system-ui, -apple-system, "Segoe UI", var(--cjk);
+  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, var(--cjk);
+
+  --gutter: clamp(16px, 4vw, 56px);
+  /* content column: gutter on small screens, centered 1360px on huge ones */
+  --pad-x: max(var(--gutter), calc((100% - 1360px) / 2));
+  --ease: cubic-bezier(.2, .7, .1, 1);
+}
+
+/* day theme: cool paper, ink type, the teal and pink deepened to read on light */
+:root[data-theme="light"] {
+  --bg: #f2f4f7;
+  --fg: #111720;
+  --text: #262e38;
+  --muted: #586373;
+  --faint: #9aa3af;
+  --line: rgba(17, 23, 32, .12);
+  --surface: rgba(17, 23, 32, .035);
+  --accent: #2fb5aa;
+  --old: #e2508c;
+  --accent-ink: #0c7f76;
+  --old-ink: #c2336f;
+  --glow-a: rgba(57, 197, 187, .16);
+  --glow-b: rgba(255, 111, 174, .11);
+  --vignette: rgba(150, 162, 180, .3);
+  --grain: .04;
+
+  --c-fg: 40, 52, 66;
+  --c-accent: 22, 160, 150;
+  --c-old: 218, 66, 128;
+  --m-h: 24, 168, 158;
+  --m-s: 212, 146, 118;
+  --m-k: 54, 60, 76;
+  --m-g: 124, 134, 150;
+  --m-p: 220, 70, 130;
+  color-scheme: light;
+}
+
+/* theme switch: a two-way segmented control (top right on every page) */
+.theme {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.theme button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .3s var(--ease), color .3s var(--ease);
+}
+.theme button:hover { color: var(--fg); }
+.theme button[aria-pressed="true"] { background: var(--fg); color: var(--bg); cursor: default; }
+.theme button:focus-visible { outline: 1px solid var(--accent); outline-offset: 1px; }
+.theme svg { width: 12px; height: 12px; display: block; }

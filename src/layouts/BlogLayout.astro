@@ -1,0 +1,72 @@
+---
+// Shell for every blog page: top bar (nav from siteConfig.links), theme
+// switch, footer. Pass `progress` on articles for the reading-progress bar.
+import site from 'virtual:site-config';
+import ThemeInit from '../components/ThemeInit.astro';
+import ThemeSwitch from '../components/ThemeSwitch.astro';
+import BrandMark from '../components/BrandMark.astro';
+import '../styles/tokens.css';
+import '../styles/blog.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  progress?: boolean;
+}
+const { title, description = '关于 JVM、性能调优、Java 基础设施，以及偶尔的二次元与游戏。', progress = false } = Astro.props;
+
+const path = Astro.url.pathname;
+const nav = [{ label: 'Home', url: '/' }, ...site.links];
+const isCurrent = (url: string) => url !== '/' && path.startsWith(url);
+const canonical = new URL(path, Astro.site);
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="theme-color" content="#070a10" />
+<link rel="canonical" href={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="alternate" type="application/rss+xml" title="dante.io" href="/rss.xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500&display=swap" />
+<ThemeInit />
+</head>
+
+<body>
+{progress && <div class="progress" aria-hidden="true"></div>}
+<div class="veil" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="bar">
+  <a class="brand" href="/" aria-label="dante.io home">
+    <BrandMark />
+    dante.io <span class="here">/ blog</span>
+  </a>
+  <div class="bar-right">
+    <nav class="nav" aria-label="Site">
+      {nav.map(l => {
+        const external = /^https?:/i.test(l.url);
+        return <a href={l.url} rel={external ? 'me' : undefined} aria-current={isCurrent(l.url) ? 'page' : undefined}>{l.label}</a>;
+      })}
+    </nav>
+    <ThemeSwitch />
+  </div>
+</header>
+
+<slot />
+
+<footer class="site-foot">
+  <span>&copy; {new Date().getFullYear()} Dante</span>
+  <span><a href="/rss.xml">RSS</a> &middot; <a href="/blog/">all posts</a> &middot; <a href="/">← back to the heap</a></span>
+</footer>
+
+<script src="../scripts/blog.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+---
+// /blog/page/2/ onwards (page 1 is /blog/)
+import PostList from '../../../components/PostList.astro';
+import { getPosts, paginate, tagCounts } from '../../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const chunks = paginate(posts);
+  return chunks.slice(1).map((chunk, i) => ({
+    params: { page: String(i + 2) },
+    props: { chunk, page: i + 2, pages: chunks.length, total: posts.length, tags: tagCounts(posts) },
+  }));
+}
+const { chunk, page, pages, total, tags } = Astro.props;
+---
+<PostList posts={chunk} page={page} pages={pages} base="/blog/" total={total} tags={tags} />
