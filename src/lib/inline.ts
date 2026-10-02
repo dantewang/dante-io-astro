@@ -11,3 +11,11 @@ export function inline(text: string): string {
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/==(.+?)==/g, '<strong class="accent">$1</strong>');
 }
+
+/** the same text with the markup stripped, for <meta> and feeds */
+export function plain(text: string): string {
+  return text
+    .replace(/\[([^\]]+)\]\([^)\s]*\)/g, '$1')
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/==(.+?)==/g, '$1');
+}

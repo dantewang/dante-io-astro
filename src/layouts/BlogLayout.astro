@@ -5,6 +5,7 @@ import site from 'virtual:site-config';
 import ThemeInit from '../components/ThemeInit.astro';
 import ThemeSwitch from '../components/ThemeSwitch.astro';
 import BrandMark from '../components/BrandMark.astro';
+import { plain } from '../lib/inline';
 import '../styles/tokens.css';
 import '../styles/blog.css';
 
@@ -13,7 +14,7 @@ interface Props {
   description?: string;
   progress?: boolean;
 }
-const { title, description = '关于 JVM、性能调优、Java 基础设施，以及偶尔的二次元与游戏。', progress = false } = Astro.props;
+const { title, description = plain(site.blog.intro), progress = false } = Astro.props;
 
 const path = Astro.url.pathname;
 const nav = [{ label: 'Home', url: '/' }, ...site.links];

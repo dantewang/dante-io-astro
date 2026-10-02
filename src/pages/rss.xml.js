@@ -1,11 +1,13 @@
 import rss from '@astrojs/rss';
+import site from 'virtual:site-config';
+import { plain } from '../lib/inline';
 import { excerpt, getPosts, postUrl } from '../lib/posts';
 
 export async function GET(context) {
   const posts = await getPosts();
   return rss({
     title: 'dante.io',
-    description: '关于 JVM、性能调优、Java 基础设施，以及偶尔的二次元与游戏。',
+    description: plain(site.blog.intro),
     site: context.site,
     items: posts.map(p => ({
       title: p.data.title,
