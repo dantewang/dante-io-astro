@@ -15,7 +15,7 @@ export default defineConfig({
       // blog's top navigation. External links open in a new tab unless
       // `newTab: false`; site paths like /blog/ open in place.
       links: [
-        { label: 'Blog', url: '/blog/', note: 'long-form notes, mostly the JVM' },
+        { label: 'Blog', url: '/blog/', note: 'long-form notes' },
         { label: 'Memos', url: 'https://memos.dante.io', note: 'notes, thoughts & fragments' },
         { label: 'GitHub', url: 'https://github.com/dantewang', note: 'code & experiments' },
       ],
