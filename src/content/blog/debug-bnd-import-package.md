@@ -1,5 +1,5 @@
 ---
-title: "如果要debug bnd为什么添加某个package到import-package里"
+title: "关于bnd的debugging"
 date: 2026-01-28T16:25:33+08:00
 tags: ["java", "osgi"]
 memo: memos/CFo62TnDtmh3rmMYNrPou7
